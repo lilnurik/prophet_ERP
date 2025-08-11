@@ -15,9 +15,12 @@ from app.main import create_app
 @pytest.fixture
 def app():
     """Create a Flask app for testing."""
+    # Set testing configuration to use SQLite
+    import os
+    os.environ['DATABASE_URL'] = 'sqlite:///:memory:'
+    
     app = create_app()
     app.config['TESTING'] = True
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
     
     with app.app_context():
         db.create_all()

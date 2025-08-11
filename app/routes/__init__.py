@@ -203,7 +203,7 @@ def health_check():
     """Health check endpoint."""
     try:
         # Simple database connectivity check
-        db.session.execute('SELECT 1')
+        result = db.session.execute(db.text('SELECT 1')).fetchone()
         
         return jsonify({
             'status': 'healthy',
@@ -215,6 +215,6 @@ def health_check():
         logger.error(f"Health check failed: {str(e)}")
         return jsonify({
             'status': 'unhealthy',
-            'message': 'Database connection failed',
+            'message': f'Database connection failed: {str(e)}',
             'timestamp': datetime.utcnow().isoformat()
         }), 503
